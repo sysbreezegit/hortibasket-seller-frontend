@@ -1,0 +1,15 @@
+[
+  {
+    "relation": [
+      "delegate_permission/common.handle_all_urls",
+      "delegate_permission/common.get_login_creds"
+    ],
+    "target": {
+      "namespace": "android_app",
+      "package_name": "com.caremall.affiliate",
+      "sha256_cert_fingerprints": [
+        "A7:6D:DC:CE:4F:52:0E:F8:D6:74:B0:11:41:59:D7:58:46:61:22:D9:65:67:85:0B:2D:16:83:4B:C5:28:7B:E0"
+      ]
+    }
+  }
+]
