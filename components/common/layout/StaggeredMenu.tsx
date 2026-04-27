@@ -226,16 +226,12 @@ const StaggeredMenu: React.FC<StaggeredMenuProps> = ({
                         {logoUrl ? (
                             <img src={logoUrl} alt="Hortibasket logo" className="h-8 w-auto" />
                         ) : (
-                            <Link href="/" onClick={() => setIsOpen(false)} className="flex items-center gap-2 group">
-                                <div
-                                    className="w-8 h-8 rounded-lg flex items-center justify-center shrink-0"
-                                    style={{ background: accentColor }}
-                                >
-                                    <span className="font-black text-xs italic text-[#1a3320]">H</span>
-                                </div>
-                                <span className="text-xl font-black text-white tracking-tighter uppercase">
-                                    Hortibasket
-                                </span>
+                            <Link href="/dashboard" onClick={() => setIsOpen(false)} className="flex items-center gap-2 group">
+                                <img 
+                                    src="/assets/hortibasket logo.png" 
+                                    alt="Hortibasket Logo" 
+                                    className="h-12 w-auto object-contain brightness-0 invert"
+                                />
                             </Link>
                         )}
                     </div>
