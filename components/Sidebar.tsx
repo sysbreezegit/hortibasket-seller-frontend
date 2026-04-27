@@ -15,6 +15,7 @@ import {
 } from "lucide-react";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
+import Link from "next/link";
 import { navigation } from "../lib/SidebarItems";
 import { useAuthStore } from "../store/AuthStore";
 import { motion, AnimatePresence } from "framer-motion";
@@ -68,7 +69,7 @@ export function Sidebar({
 
   useEffect(() => {
     setOptimisticPath(null); // Clear optimistic selection when real navigation completes
-    
+
     const activeParents = navigation
       .filter((item) => {
         if (item.children) {
@@ -108,7 +109,7 @@ export function Sidebar({
 
     return (
       <div key={item.name} className="relative group/item mb-1 z-10 w-full overflow-hidden">
-        
+
         {/* Active item edge-to-edge gradient */}
         {isActive && !isCollapsed && (
           <motion.div
@@ -118,7 +119,7 @@ export function Sidebar({
             transition={{ type: "spring", stiffness: 300, damping: 30 }}
           />
         )}
-        
+
         {/* Active indicator dot when collapsed */}
         {isActive && isCollapsed && (
           <motion.div
@@ -148,31 +149,31 @@ export function Sidebar({
           }}
         >
           <span className="sr-only">{item.name}</span>
-          
-          <motion.div 
-            animate={{ x: isActive ? 4 : 0 }} 
+
+          <motion.div
+            animate={{ x: isActive ? 4 : 0 }}
             whileHover={{ x: 4 }}
             transition={{ type: "tween", ease: "easeOut", duration: 0.3 }}
             className="flex items-center shrink-0"
           >
             <item.icon className={cn(
-              "shrink-0 transition-colors duration-300", 
+              "shrink-0 transition-colors duration-300",
               isCollapsed && !isMobile ? "h-[22px] w-[22px]" : "h-[18px] w-[18px]",
               isActive ? "text-[#00C725] stroke-[2px]" : "text-[#3B5238]/80 group-hover/item:text-[#00C725] stroke-[1.5px]"
             )} />
           </motion.div>
-          
+
           {(!isCollapsed || isMobile) && (
             <>
-              <motion.span 
-                 animate={{ x: isActive ? 4 : 0 }} 
-                 whileHover={{ x: 4 }}
-                 transition={{ type: "tween", ease: "easeOut", duration: 0.3 }}
-                 className="flex-1 text-left truncate text-[14px]"
+              <motion.span
+                animate={{ x: isActive ? 4 : 0 }}
+                whileHover={{ x: 4 }}
+                transition={{ type: "tween", ease: "easeOut", duration: 0.3 }}
+                className="flex-1 text-left truncate text-[14px]"
               >
                 {item.name}
               </motion.span>
-              
+
               {hasChildren && (
                 <div className={cn("shrink-0 transition-all duration-300", isActive ? "text-[#00C725]" : "text-[#3B5238]")}>
                   {isExpanded ? (
@@ -204,7 +205,7 @@ export function Sidebar({
               className="overflow-hidden bg-[#E3E0D8] relative z-0 shadow-inner"
             >
               <div className="absolute left-[29px] top-0 bottom-6 w-[1px] bg-[#00C725] z-0"></div>
-              
+
               <div className="pt-2 pb-4 space-y-1 relative z-10">
                 {item.children.map((child: any) => {
                   const isChildActiveState = isChildActive(child);
@@ -222,10 +223,10 @@ export function Sidebar({
                       onClick={() => handleNavigation(child, isMobile)}
                     >
                       <div className={cn(
-                        "w-[6px] h-[1px] shrink-0 transition-all duration-300", 
+                        "w-[6px] h-[1px] shrink-0 transition-all duration-300",
                         isChildActiveState ? "bg-[#00C725] w-[12px] -ml-[3px]" : "bg-[#00C725] group-hover:bg-[#00C725]"
                       )} />
-                      
+
                       <span className={cn(
                         "truncate transition-transform duration-300",
                         isChildActiveState ? "translate-x-1 font-semibold" : "group-hover:translate-x-1"
@@ -256,7 +257,7 @@ export function Sidebar({
           background: transparent;
         }
       `}</style>
-      
+
       {/* Desktop sidebar */}
       <motion.div
         animate={{ width: isCollapsed ? 80 : 240 }}
@@ -267,41 +268,51 @@ export function Sidebar({
         )}
       >
         <div className="flex flex-col h-full relative z-10 mt-2">
-          
+
           <div className={cn("flex items-center min-h-[90px]", isCollapsed ? "justify-center" : "justify-between pl-6 pr-4")}>
             <div className="flex items-center gap-0">
               <AnimatePresence mode="wait">
                 {!isCollapsed ? (
-                  <motion.div
-                    key="full-logo"
-                    initial={{ opacity: 0, scale: 0.95 }}
-                    animate={{ opacity: 1, scale: 1 }}
-                    exit={{ opacity: 0, scale: 0.95 }}
-                    transition={{ duration: 0.3 }}
+                  <Link
+                    href="/dashboard"
                     className="flex flex-col cursor-pointer"
                   >
-                     <span className="font-editorial-serif italic text-[22px] tracking-tight text-[#0D140B] leading-none">
-                      Hortibasket
-                     </span>
-                     <span className="font-sans uppercase text-[7.5px] tracking-[0.2em] text-[#00C725] mt-[4px] font-semibold">
-                       Botanical Market
-                     </span>
-                  </motion.div>
+                    <motion.div
+                      key="full-logo"
+                      initial={{ opacity: 0, scale: 0.95 }}
+                      animate={{ opacity: 1, scale: 1 }}
+                      exit={{ opacity: 0, scale: 0.95 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <img
+                        src="/assets/hortibasket logo.png"
+                        alt="Hortibasket Logo"
+                        className="h-24 w-auto object-contain"
+                      />
+                    </motion.div>
+                  </Link>
                 ) : (
-                  <motion.div
-                    key="mini-logo"
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    exit={{ opacity: 0 }}
+                  <Link
+                    href="/dashboard"
                     className="w-12 h-12 flex items-center justify-center cursor-pointer"
-                    onClick={onToggle}
                   >
-                    <span className="font-editorial-serif italic text-[32px] text-[#0D140B]">H</span>
-                  </motion.div>
+                    <motion.div
+                      key="mini-logo"
+                      initial={{ opacity: 0 }}
+                      animate={{ opacity: 1 }}
+                      exit={{ opacity: 0 }}
+                    >
+                      <img
+                        src="/assets/hortibasket logo.png"
+                        alt="H"
+                        className="h-10 w-auto object-contain"
+                      />
+                    </motion.div>
+                  </Link>
                 )}
               </AnimatePresence>
             </div>
-            
+
             {!isCollapsed && (
               <Button
                 variant="ghost"
@@ -319,66 +330,66 @@ export function Sidebar({
           <nav className="flex-1 overflow-y-auto sidebar-scroll pb-10 flex flex-col">
             {filteredNavigation.map((item) => (
               <div key={item.name}>
-                 {renderNavItem(item)}
+                {renderNavItem(item)}
               </div>
             ))}
           </nav>
 
           <div className="shrink-0 p-5 pt-4 mt-auto">
-             {!isCollapsed ? (
-               <div className="flex flex-col gap-4">
-                 <div className="flex items-center gap-4 group cursor-pointer p-2 -m-2 rounded-lg hover:bg-[#00C725]/20 transition-colors">
-                   <div className="w-[40px] h-[40px] rounded-full overflow-hidden shrink-0 border border-[#0D140B]">
-                     <img 
-                       src={user?.avatar || "https://images.unsplash.com/photo-1594834749740-74b3f66ffaeb?q=80&w=150&auto=format&fit=crop"} 
-                       alt="User" 
-                       className="w-full h-full object-cover grayscale transition-all duration-500"
-                     />
-                   </div>
-                   <div className="flex-1 min-w-0">
-                     <p className="text-[13px] font-sans text-[#0D140B] font-semibold truncate tracking-wide">
-                       {user?.name || "Eleanor Hughes"}
-                     </p>
-                     <p className="text-[11px] font-sans text-[#3B5238] font-medium truncate">
-                       {user?.email || "admin@hortibasket.com"}
-                     </p>
-                   </div>
-                 </div>
-                 
-                 <Button
-                    onClick={() => {
-                      useAuthStore.getState().logout();
-                      router.push("/login");
-                    }}
-                    variant="ghost"
-                    className="w-full h-[40px] bg-[#F2F0EA] border border-[#0D140B] hover:bg-[#00C725]/20 hover:border-[#00C725]/40 text-[#3B5238] hover:text-[#0D140B] justify-start gap-[10px] px-4 font-sans text-[11px] uppercase tracking-widest font-bold transition-all duration-300"
-                  >
-                    <LogOut className="h-[14px] w-[14px] stroke-[1.5px]" />
-                    <span className="translate-y-[1px]">Sign Out</span>
-                 </Button>
-               </div>
-             ) : (
-                <div className="flex flex-col items-center gap-6">
-                  <div className="w-[40px] h-[40px] rounded-full overflow-hidden shrink-0 border border-[#0D140B] opacity-90 hover:opacity-100 transition-opacity">
-                     <img 
-                       src={user?.avatar || "https://images.unsplash.com/photo-1594834749740-74b3f66ffaeb?q=80&w=150&auto=format&fit=crop"} 
-                       alt="User" 
-                       className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
-                     />
-                   </div>
-                   <Button
-                      onClick={() => {
-                        useAuthStore.getState().logout();
-                        router.push("/login");
-                      }}
-                      variant="ghost"
-                      size="icon"
-                      className="h-[40px] w-[40px] bg-[#F2F0EA] border border-[#0D140B] hover:bg-[#00C725]/20 hover:border-[#00C725]/50 text-[#3B5238] hover:text-[#0D140B] transition-all duration-300 rounded-full group mx-auto"
-                    >
-                      <LogOut className="h-[16px] w-[16px] stroke-[1.5px] group-hover:translate-x-[2px] transition-transform" />
-                   </Button>
+            {!isCollapsed ? (
+              <div className="flex flex-col gap-4">
+                <div className="flex items-center gap-4 group cursor-pointer p-2 -m-2 rounded-lg hover:bg-[#00C725]/20 transition-colors">
+                  <div className="w-[40px] h-[40px] rounded-full overflow-hidden shrink-0 border border-[#0D140B]">
+                    <img
+                      src={user?.avatar || "https://images.unsplash.com/photo-1594834749740-74b3f66ffaeb?q=80&w=150&auto=format&fit=crop"}
+                      alt="User"
+                      className="w-full h-full object-cover grayscale transition-all duration-500"
+                    />
+                  </div>
+                  <div className="flex-1 min-w-0">
+                    <p className="text-[13px] font-sans text-[#0D140B] font-semibold truncate tracking-wide">
+                      {user?.name || "Eleanor Hughes"}
+                    </p>
+                    <p className="text-[11px] font-sans text-[#3B5238] font-medium truncate">
+                      {user?.email || "admin@hortibasket.com"}
+                    </p>
+                  </div>
                 </div>
-             )}
+
+                <Button
+                  onClick={() => {
+                    useAuthStore.getState().logout();
+                    router.push("/login");
+                  }}
+                  variant="ghost"
+                  className="w-full h-[40px] bg-[#F2F0EA] border border-[#0D140B] hover:bg-[#00C725]/20 hover:border-[#00C725]/40 text-[#3B5238] hover:text-[#0D140B] justify-start gap-[10px] px-4 font-sans text-[11px] uppercase tracking-widest font-bold transition-all duration-300"
+                >
+                  <LogOut className="h-[14px] w-[14px] stroke-[1.5px]" />
+                  <span className="translate-y-[1px]">Sign Out</span>
+                </Button>
+              </div>
+            ) : (
+              <div className="flex flex-col items-center gap-6">
+                <div className="w-[40px] h-[40px] rounded-full overflow-hidden shrink-0 border border-[#0D140B] opacity-90 hover:opacity-100 transition-opacity">
+                  <img
+                    src={user?.avatar || "https://images.unsplash.com/photo-1594834749740-74b3f66ffaeb?q=80&w=150&auto=format&fit=crop"}
+                    alt="User"
+                    className="w-full h-full object-cover grayscale hover:grayscale-0 transition-all duration-500"
+                  />
+                </div>
+                <Button
+                  onClick={() => {
+                    useAuthStore.getState().logout();
+                    router.push("/login");
+                  }}
+                  variant="ghost"
+                  size="icon"
+                  className="h-[40px] w-[40px] bg-[#F2F0EA] border border-[#0D140B] hover:bg-[#00C725]/20 hover:border-[#00C725]/50 text-[#3B5238] hover:text-[#0D140B] transition-all duration-300 rounded-full group mx-auto"
+                >
+                  <LogOut className="h-[16px] w-[16px] stroke-[1.5px] group-hover:translate-x-[2px] transition-transform" />
+                </Button>
+              </div>
+            )}
           </div>
 
         </div>
@@ -392,21 +403,20 @@ export function Sidebar({
         )}
       >
         <div className="flex flex-col h-full relative z-10">
-          
+
           <div className="flex items-center justify-between min-h-[90px] px-6">
-            <div className="flex flex-col">
-               <span className="font-editorial-serif italic text-[22px] tracking-tight text-[#0D140B] leading-none">
-                Hortibasket
-               </span>
-               <span className="font-sans uppercase text-[7.5px] tracking-[0.2em] text-[#00C725] mt-[4px] font-semibold">
-                 Botanical Market
-               </span>
-            </div>
+            <Link href="/dashboard" className="flex flex-col">
+              <img
+                src="/assets/hortibasket logo.png"
+                alt="Hortibasket Logo"
+                className="h-16 w-auto object-contain"
+              />
+            </Link>
             <Button variant="ghost" size="icon" onClick={onClose} className="text-[#3B5238]/80 hover:text-[#0D140B]">
               <X className="h-[20px] w-[20px] stroke-[1.5px]" />
             </Button>
           </div>
-          
+
           <div className="w-full h-[1px] bg-gradient-to-r from-transparent via-[#00C725] to-transparent shrink-0 opacity-40 mb-6"></div>
 
           <nav className="flex-1 space-y-1 overflow-y-auto sidebar-scroll pb-10">
@@ -432,7 +442,7 @@ export function Sidebar({
 
       {/* Mobile overlay */}
       {isOpen && (
-        <div 
+        <div
           className="fixed inset-0 z-40 lg:hidden"
           style={{ backgroundColor: 'rgba(255, 255, 255, 0.7)', backdropFilter: 'blur(8px)' }}
           onClick={onClose}
