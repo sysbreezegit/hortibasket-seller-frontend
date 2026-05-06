@@ -468,12 +468,13 @@ export default function LoginPage() {
         <div className="login-left">
           <div className="grid-lines" />
 
-          <div className="brand">
-            <div className="brand-icon">
-              <Leaf size={18} color="#0a0f09" strokeWidth={2.5} />
-            </div>
-            <span className="brand-name">Horti<span>Basket</span></span>
-          </div>
+          <Link href="/dashboard" className="brand">
+            <img 
+              src="/assets/hortibasket logo.png" 
+              alt="Hortibasket Logo" 
+              className="h-20 w-auto object-contain brightness-0 invert"
+            />
+          </Link>
 
           <div className="left-content">
             <div className="left-tag">

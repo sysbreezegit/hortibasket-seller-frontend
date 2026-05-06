@@ -12,6 +12,7 @@ import {
     Gift,
     Ticket,
     Star,
+    User,
 } from "lucide-react";
 
 
@@ -110,5 +111,9 @@ export const navigation = [
         icon: FileText,
         href: "/finance",
     },
-
+    {
+        name: "Profile",
+        icon: User,
+        href: "/profile",
+    },
 ];

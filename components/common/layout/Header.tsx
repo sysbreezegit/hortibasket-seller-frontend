@@ -80,13 +80,12 @@ const Header = () => {
               </div>
 
               {/* Logo */}
-              <Link href="/" className="flex items-center gap-1.5 md:gap-2 group">
-                <div className="w-7 h-7 sm:w-8 sm:h-8 bg-[#224229] rounded-lg flex items-center justify-center text-[#89C839] shrink-0">
-                  <span className="font-black text-[10px] sm:text-xs italic">H</span>
-                </div>
-                <span className="text-base sm:text-lg md:text-2xl font-black text-[#224229] tracking-tighter uppercase">
-                  Hortibasket
-                </span>
+              <Link href="/dashboard" className="flex items-center gap-1.5 md:gap-2 group">
+                <img 
+                  src="/assets/hortibasket logo.png" 
+                  alt="Hortibasket Logo" 
+                  className="h-10 md:h-14 w-auto object-contain"
+                />
               </Link>
             </div>
 
