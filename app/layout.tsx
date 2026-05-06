@@ -14,10 +14,10 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Caremall Affiliate",
-  description: "Caremall affiliate is an affiliate program for caremallonline.com",
+  title: "Hortibasket Seller Portal",
+  description: "Manage your nursery and horticulture business with Hortibasket",
   icons: {
-    icon: "/caremall-icon.png"
+    icon: "/favicon.ico"
   }
 };
 

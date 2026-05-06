@@ -3,23 +3,39 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { Eye, EyeOff, Leaf, Loader2 } from "lucide-react";
+import { Eye, EyeOff, Leaf, Loader2, AlertCircle } from "lucide-react";
+import { axiosAdmin } from "@/lib/axios";
+import { useAuthStore } from "@/store/AuthStore";
 
 export default function LoginPage() {
   const router = useRouter();
+  const setUserData = useAuthStore((state) => state.setUserData);
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
-    // Static mode: no API call, just redirect to dashboard
-    setTimeout(() => {
-      router.push("/dashboard");
-    }, 600);
+    setError(null);
+    
+    try {
+      const response = await axiosAdmin.post("/auth/login", { email, password });
+      if (response.data.success) {
+        setUserData(response.data.seller, response.data.token);
+        router.push("/dashboard");
+      } else {
+        setError(response.data.message || "Login failed");
+      }
+    } catch (err: any) {
+      console.error("Login error:", err);
+      setError(err?.message || "Invalid credentials or server error");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -317,7 +333,7 @@ export default function LoginPage() {
 
         .error-box svg {
           flex-shrink: 0;
-          margin-top: 1px;
+          margin-top: 2px;
           color: #e55c5c;
         }
 
@@ -362,6 +378,26 @@ export default function LoginPage() {
         .submit-btn:disabled {
           opacity: 0.6;
           cursor: not-allowed;
+        }
+
+        .signup-prompt {
+          text-align: center;
+          margin-top: 24px;
+          font-size: 14px;
+          color: rgba(242,240,234,0.4);
+        }
+
+        .signup-link {
+          color: #00c725;
+          font-weight: 500;
+          text-decoration: none;
+          margin-left: 6px;
+          transition: color 0.2s;
+        }
+
+        .signup-link:hover {
+          color: #00e02a;
+          text-decoration: underline;
         }
 
         .divider-line {
@@ -443,48 +479,55 @@ export default function LoginPage() {
           <div className="left-content">
             <div className="left-tag">
               <div className="left-tag-dot" />
-              <span>Admin Control Center</span>
+              <span>Seller Ecosystem</span>
             </div>
             <h1 className="left-headline">
               Grow smarter,<br />
-              manage <em>better.</em>
+              sell <em>better.</em>
             </h1>
             <p className="left-sub">
-              Your centralized command panel for orders, products, and operations — all in one place.
+              Join the largest network of sustainable horticulture sellers. Manage your inventory, orders, and growth seamlessly.
             </p>
           </div>
 
           <div className="left-stats">
             <div className="stat">
               <div className="stat-num">98<span>%</span></div>
-              <div className="stat-label">Uptime</div>
+              <div className="stat-label">Delivery</div>
             </div>
             <div className="stat">
               <div className="stat-num">24<span>h</span></div>
-              <div className="stat-label">Support</div>
+              <div className="stat-label">Payouts</div>
             </div>
             <div className="stat">
               <div className="stat-num">∞</div>
-              <div className="stat-label">Scalable</div>
+              <div className="stat-label">Possibilities</div>
             </div>
           </div>
         </div>
 
         {/* ─── RIGHT ─── */}
         <div className="login-right">
-          <div className="form-overline anim anim-1">Secure Access</div>
+          <div className="form-overline anim anim-1">Seller Access</div>
           <h2 className="form-title anim anim-2">Welcome back</h2>
-          <p className="form-subtitle anim anim-3">Sign in to your admin account</p>
+          <p className="form-subtitle anim anim-3">Sign in to your seller account</p>
+
+          {error && (
+            <div className="error-box anim anim-3">
+              <AlertCircle size={16} />
+              <p>{error}</p>
+            </div>
+          )}
 
           <form onSubmit={handleSubmit} noValidate>
-              <div className="form-group anim anim-3">
-              <label className="form-label" htmlFor="admin-email">Email Address</label>
+            <div className="form-group anim anim-3">
+              <label className="form-label" htmlFor="seller-email">Email Address</label>
               <div className="input-wrap">
                 <input
-                  id="admin-email"
+                  id="seller-email"
                   type="email"
                   className="form-input"
-                  placeholder="admin@hortibasket.com"
+                  placeholder="seller@hortibasket.com"
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   autoComplete="email"
@@ -494,10 +537,10 @@ export default function LoginPage() {
             </div>
 
             <div className="form-group anim anim-4">
-              <label className="form-label" htmlFor="admin-password">Password</label>
+              <label className="form-label" htmlFor="seller-password">Password</label>
               <div className="input-wrap">
                 <input
-                  id="admin-password"
+                  id="seller-password"
                   type={showPassword ? "text" : "password"}
                   className="form-input has-icon"
                   placeholder="Enter your password"
@@ -519,7 +562,7 @@ export default function LoginPage() {
 
             <button
               type="submit"
-              id="admin-login-btn"
+              id="seller-login-btn"
               className="submit-btn anim anim-5"
               disabled={loading}
             >
@@ -529,16 +572,22 @@ export default function LoginPage() {
                   Signing in…
                 </>
               ) : (
-                "Sign In to Dashboard"
+                "Sign In to Portal"
               )}
             </button>
           </form>
 
+          <div className="signup-prompt anim anim-6">
+            Don't have an account? 
+            <Link href="/register" className="signup-link">
+              Create one now
+            </Link>
+          </div>
+
           <div className="divider-line" />
 
           <p className="footer-note anim anim-6">
-            This portal is restricted to <strong>authorized administrators</strong> only.<br />
-            Unauthorized access is strictly prohibited.
+            By signing in, you agree to our <strong>Terms of Service</strong> and <strong>Privacy Policy</strong>.
           </p>
         </div>
       </div>

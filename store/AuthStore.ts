@@ -11,6 +11,9 @@ export interface User {
   isBlocked?: boolean;
   kycStatus?: "not_submitted" | "pending" | "approved" | "rejected";
   kycRejectionReason?: string;
+  shopName?: string;
+  address?: string;
+  gstNumber?: string;
   createdAt?: string;
   updatedAt?: string;
   status?: string;
@@ -21,6 +24,7 @@ interface AuthState {
   user: User | null;
   accessToken: string | null;
   setUserData: (user: User, token: string) => void;
+  setUser: (user: User) => void;
   logout: () => void;
 }
 
@@ -30,6 +34,7 @@ export const useAuthStore = create<AuthState>()(
       user: null,
       accessToken: null,
       setUserData: (user, token) => set({ user, accessToken: token }),
+      setUser: (user) => set({ user }),
       logout: () => set({ user: null, accessToken: null }),
     }),
     {
