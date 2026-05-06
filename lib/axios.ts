@@ -1,9 +1,7 @@
 import axios from "axios";
 
 
-// export const AGENT_API = "http://localhost:5000/api/v1/"; 
-// export const AGENT_API = "https://affiliate.api.caremallonline.com/api/v1/";
-export const AGENT_API = 'https://test.affiliate.api.caremallonline.com/api/v1'
+export const AGENT_API = process.env.NEXT_PUBLIC_API_URL || "http://localhost:5000/api/v1/seller";
 
 
 const axiosAdmin = axios.create({
@@ -53,3 +51,4 @@ axiosAdmin.interceptors.response.use(
 );
 
 export { axiosAdmin };
+export default axiosAdmin;
